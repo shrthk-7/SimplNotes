@@ -1,0 +1,19 @@
+.notecard {
+  break-inside: avoid;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--teal-50);
+  border-radius: 0.125rem;
+  padding: 0.75rem 1rem;
+}
+
+.notecard-heading {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: bold;
+}
+
+.notecard-divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--teal-50);
+}

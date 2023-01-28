@@ -4,6 +4,8 @@ import "./style.css";
 
 const NoteCard = ({ note }) => {
   const [editable, setEditable] = useState(false);
+  const [noteContent, setNoteContent] = useState(note);
+
   const toggleEditable = () => {
     setEditable((currState) => !currState);
   };
@@ -14,13 +16,17 @@ const NoteCard = ({ note }) => {
         className={editable ? "notecard-disabled" : "notecard"}
         onClick={() => toggleEditable()}
       >
-        <div className="notecard-heading">{note.heading}</div>
+        <div className="notecard-heading">{noteContent.heading}</div>
         <div className="notecard-divider"></div>
         <br />
-        <div className="notecard-body">{note.body}</div>
+        <div className="notecard-body">{noteContent.body}</div>
       </div>
       {editable ? (
-        <EditNoteCard note={note} toggleEditable={toggleEditable} />
+        <EditNoteCard
+          noteContent={noteContent}
+          setNoteContent={setNoteContent}
+          toggleEditable={toggleEditable}
+        />
       ) : null}
     </>
   );

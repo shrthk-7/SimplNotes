@@ -1,9 +1,17 @@
-import handleEdit from "./handleEdit";
-
+//  @NOTES
 // stopPropagation stops bubbling of events
+
 import "./style.css";
 
-const EditNoteCard = ({ note, toggleEditable }) => {
+const EditNoteCard = ({ noteContent, setNoteContent, toggleEditable }) => {
+  function handleChange(e, category) {
+    if (category === "heading") {
+      setNoteContent({ ...noteContent, heading: e.target.value });
+    } else if (category === "body") {
+      setNoteContent({ ...noteContent, body: e.target.value });
+    }
+  }
+
   return (
     <div
       className="editable-notecard-backdrop"
@@ -11,25 +19,18 @@ const EditNoteCard = ({ note, toggleEditable }) => {
       spellCheck={false}
     >
       <div className="editable-notecard" onClick={(e) => e.stopPropagation()}>
-        <div
+        <textarea
           className="editable-notecard-heading"
-          contentEditable
-          onKeyDown={(e) => {
-            note.heading = handleEdit(e, note.heading);
-          }}
-        >
-          {note.heading}
-        </div>
+          value={noteContent.heading}
+          onChange={(e) => handleChange(e, "heading")}
+        ></textarea>
         <br />
-        <div
+        <textarea
           className="editable-notecard-body"
-          contentEditable
-          onKeyDown={(e) => {
-            note.body = handleEdit(e, note.body);
-          }}
-        >
-          {note.body}
-        </div>
+          value={noteContent.body}
+          onChange={(e) => handleChange(e, "body")}
+          rows={20}
+        ></textarea>
       </div>
     </div>
   );

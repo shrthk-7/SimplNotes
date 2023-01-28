@@ -3,13 +3,21 @@
   break-inside: avoid;
   margin-bottom: 0.75rem;
   border: 1px solid var(--teal-50);
+  outline: 2px solid transparent;
   border-radius: 0.125rem;
   padding: 0.75rem 1rem;
+  word-break: normal;
+  overflow-y: scroll;
+  scrollbar-width: none;
 }
 
 .notecard:hover {
   outline: 2px solid var(--teal-50);
   border-radius: 0.5rem;
+}
+
+.notecard::-webkit-scrollbar {
+  display: none;
 }
 
 .notecard-disabled {

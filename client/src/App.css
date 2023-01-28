@@ -4,6 +4,7 @@
   min-width: 100%;
   background: var(--teal-1000);
   color: var(--teal-50);
+  overflow: hidden;
 }
 
 .main-heading {

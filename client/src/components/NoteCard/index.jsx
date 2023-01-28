@@ -10,13 +10,18 @@ const NoteCard = ({ note }) => {
 
   return (
     <>
-      <div className="notecard" onClick={() => toggleEditable()}>
+      <div
+        className={editable ? "notecard-disabled" : "notecard"}
+        onClick={() => toggleEditable()}
+      >
         <div className="notecard-heading">{note.heading}</div>
         <div className="notecard-divider"></div>
         <br />
         <div className="notecard-body">{note.body}</div>
       </div>
-      {editable ? <EditNoteCard note={note} /> : null}
+      {editable ? (
+        <EditNoteCard note={note} toggleEditable={toggleEditable} />
+      ) : null}
     </>
   );
 };

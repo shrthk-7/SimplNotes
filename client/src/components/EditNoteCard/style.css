@@ -4,7 +4,18 @@
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: brightness(90%);
+  animation-name: decrease-backdrop-brightness;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes decrease-backdrop-brightness {
+  from {
+    backdrop-filter: brightness(100%);
+  }
+  to {
+    backdrop-filter: brightness(50%);
+  }
 }
 
 .editable-notecard {
@@ -21,7 +32,12 @@
 }
 
 .editable-notecard-heading {
+  outline: none !important;
   font-size: 1.5rem;
+}
+
+.editable-notecard-body {
+  outline: none !important;
 }
 
 @media (min-width: 640px) {

@@ -4,13 +4,13 @@
 import "./style.css";
 
 const EditNoteCard = ({ noteContent, setNoteContent, handleClose }) => {
-  function handleChange(e, category) {
+  const handleChange = (e, category) => {
     if (category === "heading") {
       setNoteContent({ ...noteContent, heading: e.target.value });
     } else if (category === "body") {
       setNoteContent({ ...noteContent, body: e.target.value });
     }
-  }
+  };
 
   return (
     <div

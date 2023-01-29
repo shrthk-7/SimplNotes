@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import NoteCard from "./components/NoteCard";
 import AddNoteButton from "./components/AddNoteButton";
 import AddNote from "./components/AddNote";
-
 import "./App.css";
 
 const App = () => {
@@ -19,15 +18,15 @@ const App = () => {
   }, []);
 
   return (
-    <div className="main">
-      <h1 className="main-heading">Notes</h1>
+    <div className="main" key={backendData}>
+      <h1 className="main-heading">NOTES</h1>
       <div className="notes-container">
         {backendData.map((note, index) => {
           return <NoteCard key={index} note={note} />;
         })}
       </div>
       {addNote ? (
-        <AddNote setAddNote={setAddNote} />
+        <AddNote setAddNote={setAddNote} setBackendData={setBackendData} />
       ) : (
         <AddNoteButton setAddNote={setAddNote} />
       )}

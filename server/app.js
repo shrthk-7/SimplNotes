@@ -7,25 +7,30 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 const notes = JSON.parse(fs.readFileSync("./notes.json", "utf-8"));
-
 app.get("/api", (req, res) => {
   res.status(200).json({
-    notes: notes.notes,
+    notes: notes,
   });
 });
 
 app.post("/api", (req, res) => {
   console.log(req.body);
-  notes.notes.unshift(req.body.content);
-  const newNotes = JSON.stringify(notes);
-  fs.writeFile("./notes.json", newNotes, (err) => {
+  const newNote = {
+    heading: req.body.content.heading || "<Empty Heading>",
+    body: req.body.content.body || "<Empty Body>",
+  };
+  notes.unshift(newNote);
+
+  fs.writeFile("./notes.json", JSON.stringify(notes), (err) => {
     if (err) {
       res.status(500).json({
+        status: "fail",
         message: "Error while saving contents",
       });
     } else {
-      res.status(500).json({
-        message: "Received",
+      res.status(200).json({
+        status: "success",
+        note: newNote,
       });
     }
   });

@@ -1,71 +1,33 @@
 const express = require("express");
+const fs = require("fs");
+
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded());
 
-const notes = [
-  {
-    heading: "Heading 1",
-    body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores ex, repellat velit esse officia, expedita laudantium consequatur itaque nemo, possimus nesciunt. Iusto dolore magni impedit beatae error! Vel dolorem corporis placeat consequuntur, nihil harum alias, dicta quidem incidunt accusantium nemo cupiditate quia reprehenderit, illum provident doloremque quasi sit ipsum aspernatur?",
-  },
-  {
-    heading: "Heading 2",
-    body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores quaerat quasi sunt eligendi vitae fugiat ex quod accusamus eius modi aperiam quam obcaecati animi iusto nihil omnis, sint asperiores optio, inventore deleniti. In recusandae minima, doloribus quisquam consequatur sit explicabo praesentium iure quasi! Laborum error reprehenderit hic accusantium, perspiciatis voluptatibus tempora provident, eum necessitatibus consequuntur iste. Tempore necessitatibus voluptate distinctio nemo recusandae obcaecati iure, voluptatem quis cum, aspernatur, quibusdam facere!",
-  },
-  {
-    heading: "Heading 3",
-    body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, ex ipsa, debitis molestiae sit quasi totam itaque tenetur reiciendis commodi expedita ea nostrum dolor impedit rerum officiis atque ut excepturi.",
-  },
-  {
-    heading: "Heading 1",
-    body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores ex, repellat velit esse officia, expedita laudantium consequatur itaque nemo, possimus nesciunt. Iusto dolore magni impedit beatae error! Vel dolorem corporis placeat consequuntur, nihil harum alias, dicta quidem incidunt accusantium nemo cupiditate quia reprehenderit, illum provident doloremque quasi sit ipsum aspernatur?",
-  },
-  {
-    heading: "Heading 1",
-    body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque, commodi? Praesentium, dolorum ut optio odit facilis modi voluptate nihil hic voluptas corporis necessitatibus, perferendis labore tempora libero recusandae possimus ipsa, aliquam doloremque? Minima non vero provident reprehenderit dolorem blanditiis, voluptate adipisci cumque ab omnis, nulla iste labore odit! Architecto nulla nihil repellendus nam error sunt! Atque, cupiditate unde. Animi, possimus saepe repellendus sunt ex veritatis fugiat porro ad repudiandae explicabo id atque provident a inventore, dolore laboriosam laudantium hic, architecto eligendi magni. Maiores, consequatur sapiente officiis deserunt alias iste libero.",
-  },
-  {
-    heading: "Heading 1",
-    body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque, commodi? Praesentium, dolorum ut optio odit facilis modi voluptate nihil hic voluptas corporis necessitatibus, perferendis labore tempora libero recusandae possimus ipsa, aliquam doloremque? Minima non vero provident reprehenderit dolorem.",
-  },
-  {
-    heading: "Heading 1",
-    body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque, commodi? Praesentium, dolorum ut optio odit facilis modi voluptate nihil hic voluptas corporis necessitatibus, perferendis labore tempora libero recusandae possimus ipsa, aliquam doloremque? Minima non vero provident reprehenderit dolorem blanditiis, voluptate adipisci cumque ab omnis, nulla iste labore odit! Architecto nulla nihil repellendus nam error sunt! Atque, cupiditate unde. Animi, possimus saepe repellendus sunt ex veritatis fugiat porro ad repudiandae explicabo id atque provident a inventore, dolore laboriosam laudantium hic",
-  },
-  {
-    heading: "Heading 1",
-    body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
-  },
-  {
-    heading: "Heading 1",
-    body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque, commodi? Praesentium, dolorum ut optio odit facilis modi voluptate nihil hic voluptas corporis necessitatibus, perferendis labore tempora libero recusandae possimus ipsa, aliquam doloremque? Minima non vero provident reprehenderit dolorem blanditiis, voluptate adipisci cumque ab omnis, nulla iste labore odit! Architecto nulla nihil repellendus nam error sunt! Atque, cupiditate unde. Animi, possimus saepe repellendus sunt ex veritatis fugiat porro ad repudiandae explicabo id atque provident a inventore, dolore laboriosam laudantium hic, architecto eligendi magni.",
-  },
-  {
-    heading: "Heading 1",
-    body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque, commodi? Praesentium, dolorum ut optio odit facilis modi voluptate nihil hic voluptas corporis necessitatibus, perferendis labore tempora libero recusandae possimus ipsa, aliquam doloremque? Minima non vero provident reprehenderit dolorem blanditiis, voluptate adipisci cumque ab omnis, nulla iste labore odit! Architecto nulla nihil repellendus nam error sunt! Atque, cupiditate unde. Animi, possimus saepe repellendus sunt ex veritatis fugiat porro ad repudiandae explicabo id atque provident a inventore, dolore laboriosam laudantium hic, architecto eligendi magni. Maiores, consequatur sapiente officiis deserunt alias iste libero.aliquam doloremque? Minima non vero provident reprehenderit dolorem blanditiis, voluptate adipisci cumque ab omnis, nulla iste labore odit! Architecto nulla nihil repellendus nam error sunt! Atque, cupiditate unde. Animi, possimus saepe repellendus sunt ex veritatis fugiat porro ad repudiandae explicabo id atque provident a inventore, dolore laboriosam laudantium hic, architecto eligendi magni.",
-  },
-  {
-    heading: "Heading 1",
-    body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque, commodi? Praesentium, dolorum ut optio odit facilis modi voluptate nihil hic voluptas corporis necessitatibus, perferendis labore tempora libero recusandae possimus ipsa, aliquam doloremque? Minima non vero provident reprehenderit dolorem blanditiis.",
-  },
-  {
-    heading: "Heading 1",
-    body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque, commodi? Praesentium, dolorum ut optio odit facilis modi voluptate nihil hic voluptas corporis necessitatibus, perferendis labore tempora libero recusandae possimus ipsa, aliquam doloremque? Minima non vero provident reprehenderit dolorem blanditiis, voluptate adipisci cumque ab omnis, nulla iste labore odit! Architecto nulla nihil repellendus nam error sunt! Atque, cupiditate unde. Animi, possimus saepe repellendus sunt ex veritatis fugiat porro ad repudiandae explicabo id atque provident a inventore, dolore laboriosam laudantium hic, architecto eligendi magni. Maiores, consequatur sapiente officiis deserunt alias iste libero.",
-  },
-  {
-    heading: "Heading 1",
-    body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque, commodi? Praesentium, dolorum ut optio odit facilis modi voluptate nihil hic voluptas corporis necessitatibus, perferendis labore tempora libero recusandae possimus ipsa, aliquam doloremque? Minima non vero provident reprehenderit dolorem blanditiis, voluptate adipisci cumque ab omnis, nulla iste labore odit! Architecto nulla nihil repellendus nam error sunt! Atque, cupiditate unde. Animi, possimus saepe repellendus sunt ex veritatis fugiat porro ad repudiandae explicabo id atque provident a inventore, dolore laboriosam laudantium hic, architecto eligendi magni. Maiores, consequatur sapiente officiis deserunt alias iste libero.",
-  },
-  {
-    heading: "Heading 1",
-    body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque, commodi? Praesentium, dolorum ut optio odit facilis modi voluptate nihil hic voluptas corporis necessitatibus, perferendis labore tempora libero recusandae possimus ipsa, aliquam doloremque? Minima non vero provident reprehenderit dolorem blanditiis, voluptate adipisci cumque ab omnis, nulla iste labore odit! Architecto nulla nihil repellendus nam error sunt! Atque, cupiditate unde. Animi, possimus saepe repellendus sunt ex veritatis fugiat porro ad repudiandae explicabo id atque provident a inventore, dolore laboriosam laudantium hic, architecto eligendi magni. Maiores, consequatur sapiente officiis deserunt alias iste libero.",
-  },
-];
+const notes = JSON.parse(fs.readFileSync("./notes.json", "utf-8"));
 
 app.get("/api", (req, res) => {
   res.status(200).json({
-    notes: notes,
+    notes: notes.notes,
+  });
+});
+
+app.post("/api", (req, res) => {
+  console.log(req.body);
+  notes.notes.unshift(req.body.content);
+  const newNotes = JSON.stringify(notes);
+  fs.writeFile("./notes.json", newNotes, (err) => {
+    if (err) {
+      res.status(500).json({
+        message: "Error while saving contents",
+      });
+    } else {
+      res.status(500).json({
+        message: "Received",
+      });
+    }
   });
 });
 

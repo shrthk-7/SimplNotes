@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import NoteCard from "./components/NoteCard";
+import AddNoteButton from "./components/AddNoteButton";
+import AddNote from "./components/AddNote";
+
 import "./App.css";
 
 const App = () => {
   const [backendData, setBackendData] = useState([]);
+  const [addNote, setAddNote] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -22,6 +26,11 @@ const App = () => {
           return <NoteCard key={index} note={note} />;
         })}
       </div>
+      {addNote ? (
+        <AddNote setAddNote={setAddNote} />
+      ) : (
+        <AddNoteButton setAddNote={setAddNote} />
+      )}
     </div>
   );
 };

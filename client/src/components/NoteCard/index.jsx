@@ -25,7 +25,7 @@ const NoteCard = ({ note }) => {
         <EditNoteCard
           noteContent={noteContent}
           setNoteContent={setNoteContent}
-          toggleEditable={toggleEditable}
+          handleClose={toggleEditable}
         />
       ) : null}
     </>

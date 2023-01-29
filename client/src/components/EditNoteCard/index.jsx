@@ -3,7 +3,7 @@
 
 import "./style.css";
 
-const EditNoteCard = ({ noteContent, setNoteContent, toggleEditable }) => {
+const EditNoteCard = ({ noteContent, setNoteContent, handleClose }) => {
   function handleChange(e, category) {
     if (category === "heading") {
       setNoteContent({ ...noteContent, heading: e.target.value });
@@ -15,7 +15,7 @@ const EditNoteCard = ({ noteContent, setNoteContent, toggleEditable }) => {
   return (
     <div
       className="editable-notecard-backdrop"
-      onClick={() => toggleEditable()}
+      onClick={() => handleClose()}
       spellCheck={false}
     >
       <div className="editable-notecard" onClick={(e) => e.stopPropagation()}>

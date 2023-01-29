@@ -1,0 +1,26 @@
+.add-note {
+  display: flex;
+  font-size: 3rem;
+  justify-content: center;
+  align-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 10px;
+  background-color: var(--teal-200);
+  border: 2px solid var(--teal-50);
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  cursor: pointer;
+}
+
+.add-note:hover {
+  width: 3.2rem;
+  height: 3.2rem;
+}
+
+.add-note span {
+  font-weight: bolder;
+  color: var(--teal-1000);
+  transform: translateY(-2px);
+}

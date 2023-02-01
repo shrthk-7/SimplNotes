@@ -21,8 +21,8 @@ const App = () => {
     <div className="main" key={backendData}>
       <h1 className="main-heading">NOTES</h1>
       <div className="notes-container">
-        {backendData.map((note, index) => {
-          return <NoteCard key={index} note={note} />;
+        {backendData.map((note) => {
+          return <NoteCard key={note.id} note={note} />;
         })}
       </div>
       {addNote ? (

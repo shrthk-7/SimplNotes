@@ -10,6 +10,21 @@ const NoteCard = ({ note }) => {
     setEditable((currState) => !currState);
   };
 
+  const handleClose = async () => {
+    toggleEditable();
+    const response = await fetch("/api", {
+      method: "PATCH",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      body: JSON.stringify({ content: noteContent }),
+    });
+    const data = response.json();
+    console.log(data);
+  };
+
   return (
     <>
       <div
@@ -25,7 +40,7 @@ const NoteCard = ({ note }) => {
         <EditNoteCard
           noteContent={noteContent}
           setNoteContent={setNoteContent}
-          handleClose={toggleEditable}
+          handleClose={handleClose}
         />
       ) : null}
     </>

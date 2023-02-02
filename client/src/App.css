@@ -2,6 +2,7 @@
 
 .main {
   min-width: 100%;
+  min-height: 100vh;
   background: var(--teal-1000);
   color: var(--teal-50);
   overflow: hidden;

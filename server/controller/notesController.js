@@ -21,24 +21,26 @@ exports.postNote = async (req, res) => {
   }
 };
 exports.updateNote = async (req, res) => {
-  const id = req.body.content._id;
-  const note = await Note.findByIdAndUpdate(id, req.body.content, {
-    new: true,
-    runValidators: true,
-  });
-  if (!note) {
+  const id = req.params.id;
+  try {
+    const note = await Note.findByIdAndUpdate(id, req.body.note, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(200).json({
+      status: "success",
+      note: note,
+    });
+  } catch (err) {
+    console.log(err);
     return res.status(400).json({
       status: "fail",
       error: "Validation failed, check note content",
     });
   }
-  res.status(200).json({
-    status: "success",
-    note: note,
-  });
 };
 exports.deleteNote = async (req, res) => {
-  const id = req.body.content._id;
+  const id = req.params.id;
   const deletedNote = await Note.findByIdAndDelete(id);
   if (!deletedNote) {
     return res.status(404).json({
@@ -51,10 +53,9 @@ exports.deleteNote = async (req, res) => {
     message: "successfully deleted",
   });
 };
-
 exports.getNote = (req, res) => {
   const searchId = req.params.id;
-  const foundNote = notes.find((note) => note.id === searchId);
+  const foundNote = Note.findById(searchId);
   if (foundNote) {
     res.status(200).json({
       status: "success",

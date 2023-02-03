@@ -9,6 +9,7 @@
   word-break: normal;
   overflow-y: scroll;
   scrollbar-width: none;
+  white-space: pre-wrap;
 }
 
 .notecard:hover {

@@ -23,6 +23,7 @@ const EditNoteCard = ({ noteContent, setNoteContent, handleClose }) => {
           className="editable-notecard-heading"
           value={noteContent.heading}
           onChange={(e) => handleChange(e, "heading")}
+          required={true}
         ></textarea>
         <br />
         <textarea
@@ -30,6 +31,7 @@ const EditNoteCard = ({ noteContent, setNoteContent, handleClose }) => {
           value={noteContent.body}
           onChange={(e) => handleChange(e, "body")}
           rows={20}
+          required={true}
         ></textarea>
       </div>
     </div>

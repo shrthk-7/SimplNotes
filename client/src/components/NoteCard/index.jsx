@@ -12,14 +12,14 @@ const NoteCard = ({ note }) => {
 
   const handleClose = async () => {
     toggleEditable();
-    const response = await fetch("/api", {
+    const response = await fetch(`/api/${noteContent._id}`, {
       method: "PATCH",
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
       },
       redirect: "follow",
-      body: JSON.stringify({ content: noteContent }),
+      body: JSON.stringify({ note: noteContent }),
     });
     const data = response.json();
     console.log(data);

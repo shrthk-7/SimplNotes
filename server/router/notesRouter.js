@@ -1,7 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const notesController = require("../controller/notesController");
 
+const router = express.Router();
 router
   .route("/")
   .get(notesController.getAllNotes)

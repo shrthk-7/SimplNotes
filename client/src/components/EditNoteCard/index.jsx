@@ -1,17 +1,11 @@
 //  @NOTES
 // stopPropagation stops bubbling of events
+// createPortal changes whos child an element is
 
+import ReactDOM from "react-dom";
 import "./style.css";
 
-const EditNoteCard = ({ noteContent, setNoteContent, handleClose }) => {
-  const handleChange = (e, category) => {
-    if (category === "heading") {
-      setNoteContent({ ...noteContent, heading: e.target.value });
-    } else if (category === "body") {
-      setNoteContent({ ...noteContent, body: e.target.value });
-    }
-  };
-
+const EditNoteCardBody = ({ noteContent, handleClose, handleChange }) => {
   return (
     <div
       className="editable-notecard-backdrop"
@@ -35,6 +29,29 @@ const EditNoteCard = ({ noteContent, setNoteContent, handleClose }) => {
         ></textarea>
       </div>
     </div>
+  );
+};
+
+const EditNoteCard = ({ noteContent, setNoteContent, handleClose }) => {
+  const handleChange = (e, category) => {
+    if (category === "heading") {
+      setNoteContent({ ...noteContent, heading: e.target.value });
+    } else if (category === "body") {
+      setNoteContent({ ...noteContent, body: e.target.value });
+    }
+  };
+
+  return (
+    <>
+      {ReactDOM.createPortal(
+        <EditNoteCardBody
+          noteContent={noteContent}
+          handleChange={handleChange}
+          handleClose={handleClose}
+        />,
+        document.querySelector("#root")
+      )}
+    </>
   );
 };
 

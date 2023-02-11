@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import "./style.css";
 
-const Login = ({ setLoggedIn }) => {
+const Login = ({ login }) => {
   const usernameRef = useRef();
   const passwordRef = useRef();
 
@@ -21,8 +21,10 @@ const Login = ({ setLoggedIn }) => {
     });
     const data = await response.json();
     if (data.status === "success") {
-      setLoggedIn(true);
+      login();
     }
+
+    console.log(data);
     usernameRef.current.value = "";
     passwordRef.current.value = "";
   };

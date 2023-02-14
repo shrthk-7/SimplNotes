@@ -1,14 +1,28 @@
 const Note = require("../models/noteModel");
+const User = require("../models/userModel");
 
 exports.getAllNotes = async (req, res) => {
-  const notes = await Note.find();
+  const user = await User.findById(req.user.user_id).populate("notes");
+
+  console.log(user.notes);
   res.json({
-    notes: notes,
+    status: "success",
+    notes: user.notes,
   });
 };
 exports.postNote = async (req, res) => {
   try {
-    const newNote = await Note.create(req.body.content);
+    const newNote = await Note.create(req.body);
+    await User.findByIdAndUpdate(
+      req.user.user_id,
+      {
+        $push: {
+          notes: newNote._id,
+        },
+      },
+      { new: true, useFindAndModify: false }
+    );
+
     res.status(201).json({
       status: "success",
       note: newNote,
@@ -23,7 +37,7 @@ exports.postNote = async (req, res) => {
 exports.updateNote = async (req, res) => {
   const id = req.params.id;
   try {
-    const note = await Note.findByIdAndUpdate(id, req.body.note, {
+    const note = await Note.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
     });

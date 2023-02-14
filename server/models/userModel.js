@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Note = require("./noteModel");
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -12,6 +13,7 @@ const userSchema = new mongoose.Schema({
   },
   notes: {
     type: [mongoose.Schema.Types.ObjectId],
+    ref: "Note",
   },
 });
 

@@ -19,14 +19,18 @@ const Notes = () => {
     fetchData();
   }, []);
 
+  let content = <h1>No notes found. Maybe add one?</h1>;
+
+  if (backendData.length > 0) {
+    content = backendData.map((note) => {
+      return <NoteCard key={note._id} note={note} />;
+    });
+  }
+
   return (
     <div className="main" key={backendData}>
       <h1 className="main-heading">NOTES</h1>
-      <div className="notes-container">
-        {backendData.map((note) => {
-          return <NoteCard key={note.id} note={note} />;
-        })}
-      </div>
+      <div className="notes-container">{content}</div>
       {addNote ? (
         <AddNote setAddNote={setAddNote} setBackendData={setBackendData} />
       ) : (

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import EditNoteCard from "../EditNoteCard";
+import updateNote from "../../utils/updateNote";
+
 import "./style.css";
 
 const NoteCard = ({ note }) => {
@@ -12,16 +14,7 @@ const NoteCard = ({ note }) => {
 
   const handleClose = async () => {
     toggleEditable();
-    const response = await fetch(`/api/${noteContent._id}`, {
-      method: "PATCH",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      redirect: "follow",
-      body: JSON.stringify({ note: noteContent }),
-    });
-    const data = response.json();
+    const data = await updateNote(noteContent);
     console.log(data);
   };
 

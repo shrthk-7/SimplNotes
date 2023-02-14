@@ -1,6 +1,7 @@
 import { useState } from "react";
 import EditNoteCard from "../EditNoteCard";
-import sendObject from "../../utils/sendObject";
+import createNote from "../../utils/createNote";
+
 import "./style.css";
 
 const AddNote = ({ setAddNote, setBackendData }) => {
@@ -11,7 +12,7 @@ const AddNote = ({ setAddNote, setBackendData }) => {
 
   const handleClose = async () => {
     setAddNote(false);
-    const data = await sendObject(noteContent);
+    const data = await createNote(noteContent);
     if (data.status === "success") {
       setBackendData((currBackendData) => {
         return [data.note, ...currBackendData];

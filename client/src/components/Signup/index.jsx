@@ -3,7 +3,7 @@ import register from "../../utils/registerUser";
 
 import "./style.css";
 
-const Signup = ({ login }) => {
+const Signup = ({ login, hasAccount }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -67,7 +67,9 @@ const Signup = ({ login }) => {
           Submit
         </button>
       </form>
-      <div className="heading">Already have an account?</div>
+      <div className="heading" onClick={hasAccount}>
+        Already have an account?
+      </div>
     </div>
   );
 };

@@ -10,7 +10,6 @@ export const AuthContextProvider = ({ children }) => {
   const [isLoggedin, setIsLoggedin] = useState(false);
 
   useEffect(() => {
-    setIsLoggedin(true);
     const prevLoginInfo = localStorage.getItem("isLoggedin");
 
     if (prevLoginInfo == true) {

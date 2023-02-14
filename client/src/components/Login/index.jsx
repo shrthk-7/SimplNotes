@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import loginUser from "../../utils/loginUser";
 import "./style.css";
 
-const Login = ({ login }) => {
+const Login = ({ login, hasNoAccount }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -52,7 +52,9 @@ const Login = ({ login }) => {
           Submit
         </button>
       </form>
-      <div className="heading">Don't have an account?</div>
+      <div className="heading" onClick={hasNoAccount}>
+        Don't have an account?
+      </div>
     </div>
   );
 };

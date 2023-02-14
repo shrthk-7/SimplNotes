@@ -11,6 +11,11 @@
 .signup-page .heading {
   width: 100%;
   text-align: center;
+  cursor: pointer;
+}
+
+.signup-page .heading:hover {
+  text-decoration: underline;
 }
 
 .form-body {

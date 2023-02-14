@@ -5,7 +5,7 @@ const fetchNotes = async () => {
     return Promise.reject("User not signed in");
   }
 
-  const response = await fetch("/api", {
+  const response = await fetch("/api/notes", {
     method: "GET",
     headers: {
       "x-access-token": jwt_token,

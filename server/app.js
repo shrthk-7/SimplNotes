@@ -8,7 +8,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.use("/api", notesRouter);
+app.use((req, res, next) => {
+  console.log("Path: " + req.path);
+  next();
+});
+
+app.use("/api/notes", notesRouter);
 app.use("/api/user", userRouter);
 
 module.exports = app;

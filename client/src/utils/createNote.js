@@ -1,11 +1,10 @@
-const sendObject = async (content) => {
+const createNote = async ({ heading, body }) => {
   const jwt_token = localStorage.getItem("token");
-
   if (!jwt_token) {
     return Promise.reject("User not signed in");
   }
 
-  const response = await fetch("/api", {
+  const response = await fetch("/api/notes", {
     method: "POST",
     credentials: "same-origin",
     headers: {
@@ -13,9 +12,9 @@ const sendObject = async (content) => {
       "x-access-token": jwt_token,
     },
     redirect: "follow",
-    body: JSON.stringify({ content }),
+    body: JSON.stringify({ heading, body }),
   });
   return response.json();
 };
 
-export default sendObject;
+export default createNote;

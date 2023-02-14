@@ -1,16 +1,17 @@
 const express = require("express");
 const notesController = require("../controller/notesController");
+const verifyUser = require("../middleware/verifyUser");
 
 const router = express.Router();
 router
   .route("/")
-  .get(notesController.getAllNotes)
-  .post(notesController.postNote);
+  .get(verifyUser, notesController.getAllNotes)
+  .post(verifyUser, notesController.postNote);
 
 router
   .route("/:id")
-  .get(notesController.getNote)
-  .patch(notesController.updateNote)
-  .delete(notesController.deleteNote);
+  .get(verifyUser, notesController.getNote)
+  .patch(verifyUser, notesController.updateNote)
+  .delete(verifyUser, notesController.deleteNote);
 
 module.exports = router;

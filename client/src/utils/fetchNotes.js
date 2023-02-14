@@ -1,4 +1,4 @@
-const sendObject = async (content) => {
+const fetchNotes = async () => {
   const jwt_token = localStorage.getItem("token");
 
   if (!jwt_token) {
@@ -6,16 +6,13 @@ const sendObject = async (content) => {
   }
 
   const response = await fetch("/api", {
-    method: "POST",
-    credentials: "same-origin",
+    method: "GET",
     headers: {
-      "Content-Type": "application/json",
       "x-access-token": jwt_token,
     },
-    redirect: "follow",
-    body: JSON.stringify({ content }),
   });
+
   return response.json();
 };
 
-export default sendObject;
+export default fetchNotes;

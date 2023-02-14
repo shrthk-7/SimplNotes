@@ -5,16 +5,17 @@ import NoteCard from "../../components/NoteCard";
 import AddNoteButton from "../../components/AddNoteButton";
 import AddNote from "../../components/AddNote";
 
+import fetchNotes from "../../utils/fetchNotes";
+
 const Notes = () => {
   const [backendData, setBackendData] = useState([]);
   const [addNote, setAddNote] = useState(false);
 
   useEffect(() => {
-    async function fetchData() {
-      const res = await fetch("/api");
-      const data = await res.json();
-      setBackendData(data.notes);
-    }
+    const fetchData = async () => {
+      const data = await fetchNotes();
+      if (data.status === "success") setBackendData(data.notes);
+    };
     fetchData();
   }, []);
 

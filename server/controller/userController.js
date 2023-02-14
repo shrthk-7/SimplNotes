@@ -1,53 +1,95 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-const SALT_ROUNDS = 2;
+const SALT_ROUNDS = 5;
 
-exports.createNewUser = async (req, res) => {
+exports.registerUser = async (req, res) => {
   try {
-    console.log(req.body);
     const { username, password } = req.body;
+    console.log(req.body);
+    if (!(username && password)) {
+      throw new Error("Both fields are mandatory");
+    }
+
+    const existingUser = await User.findOne({
+      username: username.toLowerCase(),
+    });
+
+    if (existingUser) {
+      throw new Error("Username already exists");
+    }
+
     const hashed_password = await bcrypt.hash(password, SALT_ROUNDS);
 
-    await User.create({
+    const user = await User.create({
       username: username,
       password: hashed_password,
     });
 
+    const token = jwt.sign(
+      {
+        user_id: user._id,
+        username: user.username,
+      },
+      process.env.TOKEN_KEY,
+      {
+        expiresIn: "2h",
+      }
+    );
+
+    user.token = token;
+
     res.status(201).json({
       status: "success",
       message: "user created",
+      token: token,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "error",
-      error: error,
+      error: JSON.stringify(error),
     });
   }
 };
 
-exports.verifyUser = async (req, res) => {
+exports.loginUser = async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username: username });
 
     if (!user) {
-      throw "user not found";
+      throw new Error("User not found");
     }
 
     const verified = await bcrypt.compare(password, user.password);
 
     if (!verified) {
-      throw "user not found";
+      throw new Error("User not found");
     }
+
+    const token = jwt.sign(
+      {
+        user_id: user._id,
+        username: user.username,
+      },
+      process.env.TOKEN_KEY,
+      {
+        expiresIn: "2h",
+      }
+    );
+
+    user.token = token;
 
     res.status(201).json({
       status: "success",
-      message: "logged in",
+      token: token,
     });
   } catch (error) {
+    console.log(error);
     res.status(404).json({
-      message: "user not found",
+      message: "error.msg",
     });
   }
 };

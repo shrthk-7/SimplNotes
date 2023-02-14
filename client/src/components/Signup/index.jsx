@@ -1,58 +1,66 @@
-import React, { useRef } from "react";
+import { useState } from "react";
+import register from "../../utils/registerUser";
+
 import "./style.css";
 
-const Signup = () => {
-  const usernameRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
+const Signup = ({ login }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const createNewUser = async (event) => {
+  const signUpHandler = async (event) => {
     event.preventDefault();
-    const response = await fetch("/api/user/signup", {
-      method: "POST",
-      credentials: "same-origin",
-      redirect: "follow",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: usernameRef.current.value,
-        password: passwordRef.current.value,
-      }),
-    });
-    const data = await response.json();
+    const user = {
+      username,
+      password,
+    };
 
-    usernameRef.current.value = "";
-    passwordRef.current.value = "";
-    passwordConfirmRef.current.value = "";
+    const data = await register(user);
 
-    console.log(data);
+    if (data.status === "success") {
+      localStorage.setItem("token", data.token);
+      login(data.token);
+    } else {
+      console.log(data);
+    }
+
+    setUsername("");
+    setPassword("");
+    setConfirmPassword("");
   };
 
   return (
     <div className="signup-page">
       <h2 className="heading">Sign Up</h2>
-      <form className="form-body" onSubmit={createNewUser}>
+      <form className="form-body" onSubmit={signUpHandler}>
         <div className="form-group">
           <label htmlFor="username">Username</label>
-          <input type="text" name="username" id="username" ref={usernameRef} />
+          <input
+            type="text"
+            name="username"
+            value={username}
+            onChange={(event) => {
+              setUsername(event.target.value);
+            }}
+          />
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
             type="password"
             name="password"
-            id="password"
-            ref={passwordRef}
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
           />
         </div>
         <div className="form-group">
           <label htmlFor="passwordConfirm">Confirm Password</label>
           <input
-            type="passwordConfirm"
+            type="password"
             name="passwordConfirm"
             id="passwordConfirm"
-            ref={passwordConfirmRef}
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
           />
         </div>
         <button type="submit" className="submit-btn">

@@ -1,59 +1,46 @@
 const Note = require("../models/noteModel");
 const User = require("../models/userModel");
 
-exports.getAllNotes = async (req, res) => {
+const ApiError = require("../utils/ApiError");
+const catchAsyncError = require("../utils/catchAsyncError");
+
+exports.getAllNotes = catchAsyncError(async (req, res, next) => {
   const user = await User.findById(req.user.user_id).populate("notes");
 
-  console.log(user.notes);
   res.json({
     status: "success",
     notes: user.notes,
   });
-};
-exports.postNote = async (req, res) => {
-  try {
-    const newNote = await Note.create(req.body);
-    await User.findByIdAndUpdate(
-      req.user.user_id,
-      {
-        $push: {
-          notes: newNote._id,
-        },
+});
+exports.postNote = catchAsyncError(async (req, res, next) => {
+  const newNote = await Note.create(req.body);
+  await User.findByIdAndUpdate(
+    req.user.user_id,
+    {
+      $push: {
+        notes: newNote._id,
       },
-      { new: true, useFindAndModify: false }
-    );
+    },
+    { new: true, useFindAndModify: false }
+  );
 
-    res.status(201).json({
-      status: "success",
-      note: newNote,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "error",
-      error: error,
-    });
-  }
-};
-exports.updateNote = async (req, res) => {
+  res.status(201).json({
+    status: "success",
+    note: newNote,
+  });
+});
+exports.updateNote = catchAsyncError(async (req, res, next) => {
   const id = req.params.id;
-  try {
-    const note = await Note.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    res.status(200).json({
-      status: "success",
-      note: note,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(400).json({
-      status: "fail",
-      error: "Validation failed, check note content",
-    });
-  }
-};
-exports.deleteNote = async (req, res) => {
+  const note = await Note.findByIdAndUpdate(id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  res.status(200).json({
+    status: "success",
+    note: note,
+  });
+});
+exports.deleteNote = catchAsyncError(async (req, res, next) => {
   const id = req.params.id;
   const deletedNote = await Note.findByIdAndDelete(id);
   if (!deletedNote) {
@@ -66,18 +53,15 @@ exports.deleteNote = async (req, res) => {
     status: "success",
     message: "successfully deleted",
   });
-};
-exports.getNote = (req, res) => {
+});
+exports.getNote = catchAsyncError(async (req, res, next) => {
   const searchId = req.params.id;
   const foundNote = Note.findById(searchId);
-  if (foundNote) {
-    res.status(200).json({
-      status: "success",
-      note: foundNote,
-    });
-  } else {
-    res.status(404).json({
-      status: "fail",
-    });
+  if (!foundNote) {
+    next(new ApiError(`note with requested id : ${searchId} not found`, 404));
   }
-};
+  res.status(200).json({
+    status: "success",
+    note: foundNote,
+  });
+});

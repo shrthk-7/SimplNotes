@@ -1,22 +1,14 @@
 const jwt = require("jsonwebtoken");
+const ApiError = require("../utils/ApiError");
+const catchAsyncError = require("../utils/catchAsyncError");
 
-verifyUser = (req, res, next) => {
+verifyUser = catchAsyncError(async (req, res, next) => {
   const jwt_token = req.headers["x-access-token"];
+  if (!jwt_token) next(new ApiError("no access token found", 401));
 
-  if (!jwt_token) next();
-
-  try {
-    const user = jwt.verify(jwt_token, process.env.TOKEN_KEY);
-    req.user = user;
-    console.log(user);
-    next();
-  } catch (error) {
-    res.status(401).json({
-      status: "fail",
-      message: "user not found",
-    });
-    next(error);
-  }
-};
+  const user = jwt.verify(jwt_token, process.env.TOKEN_KEY);
+  req.user = user;
+  next();
+});
 
 module.exports = verifyUser;

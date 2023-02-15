@@ -43,12 +43,9 @@ exports.updateNote = catchAsyncError(async (req, res, next) => {
 exports.deleteNote = catchAsyncError(async (req, res, next) => {
   const id = req.params.id;
   const deletedNote = await Note.findByIdAndDelete(id);
-  if (!deletedNote) {
-    return res.status(404).json({
-      status: "fail",
-      message: "could delete item with the provided id",
-    });
-  }
+  if (!deletedNote)
+    return next(new ApiError(`couldnot find note with id ${id}`, 401));
+
   res.status(204).json({
     status: "success",
     message: "successfully deleted",
@@ -58,7 +55,9 @@ exports.getNote = catchAsyncError(async (req, res, next) => {
   const searchId = req.params.id;
   const foundNote = Note.findById(searchId);
   if (!foundNote) {
-    next(new ApiError(`note with requested id : ${searchId} not found`, 404));
+    return next(
+      new ApiError(`note with requested id : ${searchId} not found`, 404)
+    );
   }
   res.status(200).json({
     status: "success",

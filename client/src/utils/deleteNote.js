@@ -1,11 +1,11 @@
-const deleteNote = async (id) => {
+const deleteNote = async (note) => {
   const jwt_token = localStorage.getItem("token");
 
   if (!jwt_token) {
     return Promise.reject("User not signed in");
   }
 
-  const response = await fetch("/api", {
+  const response = await fetch(`/api/notes/${note._id}`, {
     method: "DELETE",
     credentials: "same-origin",
     redirect: "follow",
@@ -13,7 +13,6 @@ const deleteNote = async (id) => {
       "Content-Type": "application/json",
       "x-access-token": jwt_token,
     },
-    body: JSON.stringify({ id: id }),
   });
   return response.json();
 };

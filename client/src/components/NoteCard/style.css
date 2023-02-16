@@ -1,5 +1,5 @@
 .notecard {
-  cursor: pointer;
+  cursor: default;
   break-inside: avoid;
   margin-bottom: 0.75rem;
   border: 1px solid var(--teal-50);
@@ -12,9 +12,13 @@
   white-space: pre-wrap;
 }
 
-.notecard:hover {
-  outline: 2px solid var(--teal-50);
+.notecard:hover,
+.notecard:active,
+.notecard:focus {
+  box-shadow: 0 0 10px rgb(0, 0, 0);
+  outline: 1px solid var(--teal-200);
   border-radius: 0.5rem;
+  background-color: var(--teal-950);
 }
 
 .notecard::-webkit-scrollbar {
@@ -41,4 +45,56 @@
   width: 100%;
   height: 1px;
   background-color: var(--teal-50);
+}
+
+.notecard-options-divider {
+  width: 20%;
+  height: 1px;
+  background-color: var(--teal-50);
+  margin-top: 1rem;
+  opacity: 0;
+}
+
+.notecard-options {
+  opacity: 0;
+  height: 0;
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  transition: all 0.1s ease-in;
+}
+
+.notecard-delete,
+.notecard-bg-color {
+  cursor: pointer;
+  margin-right: 0.5rem;
+  height: fit-content;
+  font-size: 1.5rem;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.notecard:hover .notecard-options {
+  opacity: 1;
+  height: 2rem;
+}
+.notecard:hover .notecard-options-divider {
+  opacity: 0.7;
+}
+.notecard-options div:hover {
+  background-color: var(--teal-700);
+}
+.notecard-disabled .notecard-options {
+  height: 2rem;
+}
+
+@media (width < 780px) {
+  .notecard-options {
+    opacity: 1;
+    height: 2rem;
+  }
+  .notecard-options-divider {
+    opacity: 0.7;
+  }
 }

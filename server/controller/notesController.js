@@ -41,14 +41,25 @@ exports.updateNote = catchAsyncError(async (req, res, next) => {
   });
 });
 exports.deleteNote = catchAsyncError(async (req, res, next) => {
-  const id = req.params.id;
-  const deletedNote = await Note.findByIdAndDelete(id);
-  if (!deletedNote)
-    return next(new ApiError(`couldnot find note with id ${id}`, 401));
+  const noteID = req.params.id;
 
-  res.status(204).json({
+  await Note.findByIdAndDelete(noteID);
+  await User.findByIdAndUpdate(
+    req.user.user_id,
+    {
+      $pull: {
+        notes: noteID,
+      },
+    },
+    {
+      new: true,
+      useFindAndModify: false,
+    }
+  );
+
+  res.status(200).json({
     status: "success",
-    message: "successfully deleted",
+    message: `note with id: ${noteID} deleted successfully`,
   });
 });
 exports.getNote = catchAsyncError(async (req, res, next) => {

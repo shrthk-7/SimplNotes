@@ -7,7 +7,7 @@ import AuthContext from "./context/auth-context";
 import "./App.css";
 
 const App = () => {
-  const [hasAccount, setHasAccount] = useState(false);
+  const [hasAccount, setHasAccount] = useState(true);
   const { isLoggedin, login } = useContext(AuthContext);
 
   let content = <></>;

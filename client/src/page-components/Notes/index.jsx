@@ -19,11 +19,17 @@ const Notes = () => {
     fetchData();
   }, []);
 
+  const removeNote = (id) => {
+    setBackendData((currBackendData) => {
+      return currBackendData.filter((note) => note._id !== id);
+    });
+  };
+
   let content = <h1>No notes found. Maybe add one?</h1>;
 
   if (backendData.length > 0) {
     content = backendData.map((note) => {
-      return <NoteCard key={note._id} note={note} />;
+      return <NoteCard key={note._id} note={note} removeNote={removeNote} />;
     });
   }
 

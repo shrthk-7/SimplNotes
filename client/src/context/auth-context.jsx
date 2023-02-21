@@ -10,21 +10,19 @@ export const AuthContextProvider = ({ children }) => {
   const [isLoggedin, setIsLoggedin] = useState(false);
 
   useEffect(() => {
-    const prevLoginInfo = localStorage.getItem("isLoggedin");
+    const lastSessionToken = localStorage.getItem("token");
 
-    if (prevLoginInfo == true) {
+    if (lastSessionToken) {
       setIsLoggedin(true);
     }
   }, []);
 
   const loginHandler = (token) => {
-    localStorage.setItem("isLoggedin", true);
     localStorage.setItem("token", token);
     setIsLoggedin(true);
   };
 
   const logoutHandler = () => {
-    localStorage.removeItem("isLoggedin");
     localStorage.removeItem("token");
     setIsLoggedin(false);
   };

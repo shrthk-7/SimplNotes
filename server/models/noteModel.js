@@ -10,6 +10,14 @@ const noteSchema = new mongoose.Schema({
     type: String,
     required: [true, "A note must have a body"],
   },
+  backgroundColor: {
+    type: String,
+    default: "var(--teal-950)",
+  },
+  color: {
+    type: String,
+    default: "var(--teal-50)",
+  },
 });
 
 const Note = mongoose.model("Note", noteSchema);

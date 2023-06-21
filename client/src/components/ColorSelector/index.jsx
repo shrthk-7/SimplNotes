@@ -16,7 +16,6 @@ const colorsList = [
   ["teal-900", "teal-50"],
   ["teal-950", "teal-50"],
   ["teal-1000", "teal-50"],
-  ["teal-1000", "teal-50"],
   ["grey-700", "teal-50"],
   ["grey-800", "teal-50"],
   ["grey-900", "teal-50"],

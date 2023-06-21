@@ -12,7 +12,14 @@ const EditNoteCardBody = ({ noteContent, handleClose, handleChange }) => {
       onClick={() => handleClose()}
       spellCheck={false}
     >
-      <div className="editable-notecard" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="editable-notecard"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          backgroundColor: noteContent.backgroundColor,
+          color: noteContent.color,
+        }}
+      >
         <textarea
           className="editable-notecard-heading"
           value={noteContent.heading}

@@ -27,7 +27,7 @@ const NoteCard = ({ note, removeNote }) => {
     e.stopPropagation();
     const data = await deleteNote(noteContent);
     if (data.status === "success") {
-      removeNote(note._id);
+      removeNote(note.id);
     }
   };
 

@@ -1,11 +1,16 @@
-const Note = require("../models/noteModel");
-const User = require("../models/userModel");
-
+const prisma = require("../utils/prisma");
 const ApiError = require("../utils/ApiError");
 const catchAsyncError = require("../utils/catchAsyncError");
 
 exports.getAllNotes = catchAsyncError(async (req, res, next) => {
-  const user = await User.findById(req.user.user_id).populate("notes");
+  const user = await prisma.user.findFirst({
+    where: {
+      id: req.user.id,
+    },
+    include: {
+      notes: true,
+    },
+  });
 
   res.json({
     status: "success",
@@ -13,16 +18,17 @@ exports.getAllNotes = catchAsyncError(async (req, res, next) => {
   });
 });
 exports.postNote = catchAsyncError(async (req, res, next) => {
-  const newNote = await Note.create(req.body);
-  await User.findByIdAndUpdate(
-    req.user.user_id,
-    {
-      $push: {
-        notes: newNote._id,
+  const newNote = await prisma.note.create({
+    data: {
+      heading: req.body.heading,
+      body: req.body.body,
+      User: {
+        connect: {
+          id: req.user.id,
+        },
       },
     },
-    { new: true, useFindAndModify: false }
-  );
+  });
 
   res.status(201).json({
     status: "success",
@@ -30,48 +36,84 @@ exports.postNote = catchAsyncError(async (req, res, next) => {
   });
 });
 exports.updateNote = catchAsyncError(async (req, res, next) => {
-  const id = req.params.id;
-  const note = await Note.findByIdAndUpdate(id, req.body, {
-    new: true,
-    runValidators: true,
+  const note_id = req.params.id;
+
+  const { heading, body, backgroundColor, color } = req.body;
+  const updatedNote = await prisma.note.update({
+    where: {
+      id: note_id,
+    },
+    data: {
+      heading: heading,
+      body: body,
+      backgroundColor: backgroundColor,
+      color: color,
+    },
   });
   res.status(200).json({
     status: "success",
-    note: note,
+    note: updatedNote,
   });
 });
 exports.deleteNote = catchAsyncError(async (req, res, next) => {
-  const noteID = req.params.id;
+  const note_id = req.params.id;
+  const note = await prisma.note.findFirst({
+    where: {
+      id: note_id,
+    },
+    include: {
+      User: true,
+    },
+  });
 
-  await Note.findByIdAndDelete(noteID);
-  await User.findByIdAndUpdate(
-    req.user.user_id,
-    {
-      $pull: {
-        notes: noteID,
+  if (!note || note.User.id != req.user.id) {
+    return next(new ApiError("No such post found"));
+  }
+
+  await prisma.note.delete({
+    where: {
+      id: note_id,
+    },
+  });
+
+  await prisma.user.update({
+    where: {
+      id: req.user.id,
+    },
+    data: {
+      notes: {
+        disconnect: {
+          id: note_id,
+        },
       },
     },
-    {
-      new: true,
-      useFindAndModify: false,
-    }
-  );
+  });
 
   res.status(200).json({
     status: "success",
-    message: `note with id: ${noteID} deleted successfully`,
+    message: `note with id: ${note_id} deleted successfully`,
   });
 });
 exports.getNote = catchAsyncError(async (req, res, next) => {
-  const searchId = req.params.id;
-  const foundNote = Note.findById(searchId);
-  if (!foundNote) {
+  const note_id = req.params.id;
+
+  const note = await prisma.note.findFirst({
+    where: {
+      id: note_id,
+    },
+    include: {
+      User: true,
+    },
+  });
+
+  if (!note || note.User.id != req.user.id) {
     return next(
-      new ApiError(`note with requested id : ${searchId} not found`, 404)
+      new ApiError(`note with requested id : ${note_id} not found`, 404)
     );
   }
+
   res.status(200).json({
     status: "success",
-    note: foundNote,
+    note: note,
   });
 });

@@ -5,7 +5,7 @@ const deleteNote = async (note) => {
     return Promise.reject("User not signed in");
   }
 
-  const response = await fetch(`/api/notes/${note._id}`, {
+  const response = await fetch(`/api/notes/${note.id}`, {
     method: "DELETE",
     credentials: "same-origin",
     redirect: "follow",

@@ -1,0 +1,36 @@
+.toast {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 1rem;
+  min-height: 7rem;
+
+  border: 2px solid;
+  border-radius: 5px;
+}
+
+.toast.slidingIn {
+  animation: slideIn 0.2s ease-in-out forwards;
+}
+.toast.slidingOut {
+  animation: slideOut 0.2s ease-in-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(150%);
+  }
+}

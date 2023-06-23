@@ -32,7 +32,6 @@ const Notes = () => {
       return <NoteCard key={note.id} note={note} removeNote={removeNote} />;
     });
   }
-
   return (
     <div className="main" key={backendData}>
       <h1 className="main-heading">NOTES</h1>

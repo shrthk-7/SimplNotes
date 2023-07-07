@@ -1,8 +1,10 @@
-const fetchNotes = async () => {
+import catchErrors from "./catchAsync";
+
+const fetchNotes = catchErrors(async () => {
   const jwt_token = localStorage.getItem("token");
 
   if (!jwt_token) {
-    return Promise.reject("User not signed in");
+    throw new Error("User not signed in: No JWT Token found!");
   }
 
   const response = await fetch("/api/notes", {
@@ -12,7 +14,7 @@ const fetchNotes = async () => {
     },
   });
 
-  return response.json();
-};
+  return await response.json();
+});
 
 export default fetchNotes;

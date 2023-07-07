@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import register from "../../utils/registerUser";
+import ToastContext from "../../context/toast-context";
 
 import "./style.css";
 
 const Signup = ({ login, hasAccount }) => {
+  const { handleResponse } = useContext(ToastContext);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -20,9 +23,9 @@ const Signup = ({ login, hasAccount }) => {
     if (data.status === "success") {
       localStorage.setItem("token", data.token);
       login(data.token);
-    } else {
-      console.log(data);
     }
+
+    handleResponse(data);
 
     setUsername("");
     setPassword("");

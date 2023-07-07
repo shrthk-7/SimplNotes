@@ -1,8 +1,10 @@
-const updateNote = async (note) => {
+import catchErrors from "./catchAsync";
+
+const updateNote = catchErrors(async (note) => {
   const jwt_token = localStorage.getItem("token");
 
   if (!jwt_token) {
-    return Promise.reject("User not signed in");
+    throw new Error("User not signed in: No JWT Token found!");
   }
 
   const response = await fetch(`/api/notes/${note.id}`, {
@@ -15,7 +17,7 @@ const updateNote = async (note) => {
     redirect: "follow",
     body: JSON.stringify({ ...note }),
   });
-  return response.json();
-};
+  return await response.json();
+});
 
 export default updateNote;

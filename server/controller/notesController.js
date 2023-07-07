@@ -32,6 +32,7 @@ exports.postNote = catchAsyncError(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
+    message: "Note created successfully",
     note: newNote,
   });
 });
@@ -52,6 +53,7 @@ exports.updateNote = catchAsyncError(async (req, res, next) => {
   });
   res.status(200).json({
     status: "success",
+    message: "Note updated successfully",
     note: updatedNote,
   });
 });
@@ -91,7 +93,7 @@ exports.deleteNote = catchAsyncError(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    message: `note with id: ${note_id} deleted successfully`,
+    message: `Note deleted successfully`,
   });
 });
 exports.getNote = catchAsyncError(async (req, res, next) => {

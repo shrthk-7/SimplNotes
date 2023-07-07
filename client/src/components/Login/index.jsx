@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import { useState, useContext } from "react";
 import loginUser from "../../utils/loginUser";
+import ToastContext from "../../context/toast-context";
 import "./style.css";
 
 const Login = ({ login, hasNoAccount }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const { handleResponse } = useContext(ToastContext);
 
   const loginHandler = async (event) => {
     event.preventDefault();
@@ -18,9 +21,9 @@ const Login = ({ login, hasNoAccount }) => {
 
     if (data.status === "success") {
       login(data.token);
-    } else {
-      console.log(data);
     }
+
+    handleResponse(data);
 
     setUsername("");
     setPassword("");

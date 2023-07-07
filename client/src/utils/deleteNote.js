@@ -1,8 +1,10 @@
-const deleteNote = async (note) => {
+import catchErrors from "./catchAsync";
+
+const deleteNote = catchErrors(async (note) => {
   const jwt_token = localStorage.getItem("token");
 
   if (!jwt_token) {
-    return Promise.reject("User not signed in");
+    throw new Error("User not signed in : No JWT token found!");
   }
 
   const response = await fetch(`/api/notes/${note.id}`, {
@@ -14,7 +16,7 @@ const deleteNote = async (note) => {
       "x-access-token": jwt_token,
     },
   });
-  return response.json();
-};
+  return await response.json();
+});
 
 export default deleteNote;

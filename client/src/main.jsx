@@ -8,9 +8,9 @@ import { ToastContextProvider } from "./context/toast-context";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <AuthContextProvider>
-    <ToastContextProvider>
+  <ToastContextProvider>
+    <AuthContextProvider>
       <App />
-    </ToastContextProvider>
-  </AuthContextProvider>
+    </AuthContextProvider>
+  </ToastContextProvider>
 );

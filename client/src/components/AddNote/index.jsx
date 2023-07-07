@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import EditNoteCard from "../EditNoteCard";
 import createNote from "../../utils/createNote";
+import ToastContext from "../../context/toast-context";
 
 import "./style.css";
 
@@ -9,6 +10,7 @@ const AddNote = ({ setAddNote, setBackendData }) => {
     heading: "Heading",
     body: "Body",
   });
+  const { handleResponse } = useContext(ToastContext);
 
   const handleClose = async () => {
     setAddNote(false);
@@ -18,6 +20,7 @@ const AddNote = ({ setAddNote, setBackendData }) => {
         return [data.note, ...currBackendData];
       });
     }
+    handleResponse(data);
   };
 
   return (

@@ -46,7 +46,7 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
   });
 });
 
-exports.loginUser = catchAsyncError(async (req, res) => {
+exports.loginUser = catchAsyncError(async (req, res, next) => {
   const { username, password } = req.body;
   if (!(username && password))
     return next(new ApiError(`both fields are required`, 400));
@@ -56,10 +56,10 @@ exports.loginUser = catchAsyncError(async (req, res) => {
       username: username,
     },
   });
-  if (!user) return next(new ApiError("user not found"));
+  if (!user) return next(new ApiError("user not found", 401));
 
   const verified = await bcrypt.compare(password, user.password);
-  if (!verified) return next(new ApiError("user not found"));
+  if (!verified) return next(new ApiError("user not found", 401));
 
   const token = jwt.sign(
     {

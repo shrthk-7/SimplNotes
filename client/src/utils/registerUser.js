@@ -1,4 +1,6 @@
-const register = async (body) => {
+import catchErrors from "./catchAsync";
+
+const register = catchErrors(async (body) => {
   const response = await fetch("/api/user/signup", {
     method: "POST",
     credentials: "same-origin",
@@ -8,7 +10,7 @@ const register = async (body) => {
     },
     body: JSON.stringify(body),
   });
-  return response.json();
-};
+  return await response.json();
+});
 
 export default register;

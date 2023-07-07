@@ -19,6 +19,12 @@ const colorTable = {
   },
 };
 
+/*
+  defaults:
+    delay: 5000ms or 5s
+    type: success [greenish color]
+    message: empty string
+*/
 const Toast = ({ message, onDelete, delay, type }) => {
   if (type !== "info" && type !== "danger" && type !== "success") {
     type = "success";

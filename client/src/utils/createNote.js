@@ -1,7 +1,9 @@
-const createNote = async ({ heading, body }) => {
+import catchErrors from "./catchAsync";
+
+const createNote = catchErrors(async ({ heading, body }) => {
   const jwt_token = localStorage.getItem("token");
   if (!jwt_token) {
-    return Promise.reject("User not signed in");
+    throw new Error("User not signed in");
   }
 
   const response = await fetch("/api/notes", {
@@ -14,7 +16,7 @@ const createNote = async ({ heading, body }) => {
     redirect: "follow",
     body: JSON.stringify({ heading, body }),
   });
-  return response.json();
-};
+  return await response.json();
+});
 
 export default createNote;

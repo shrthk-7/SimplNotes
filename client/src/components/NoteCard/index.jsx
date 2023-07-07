@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { IoIosColorPalette, IoIosTrash } from "react-icons/io";
 
 import EditNoteCard from "../EditNoteCard";
@@ -6,12 +6,16 @@ import ColorSelector from "../ColorSelector";
 import updateNote from "../../utils/updateNote";
 import deleteNote from "../../utils/deleteNote";
 
+import ToastContext from "../../context/toast-context";
+
 import "./style.css";
 
 const NoteCard = ({ note, removeNote }) => {
   const [editable, setEditable] = useState(false);
   const [colorSelectorActive, setColorSelectorActive] = useState(false);
   const [noteContent, setNoteContent] = useState(note);
+
+  const { handleResponse } = useContext(ToastContext);
 
   const toggleEditable = () => {
     setEditable((currState) => !currState);
@@ -21,14 +25,14 @@ const NoteCard = ({ note, removeNote }) => {
   const handleClose = async () => {
     toggleEditable();
     const data = await updateNote(noteContent);
+    handleResponse(data);
   };
 
   const handleDelete = async (e) => {
     e.stopPropagation();
     const data = await deleteNote(noteContent);
-    if (data.status === "success") {
-      removeNote(note.id);
-    }
+    removeNote(note.id);
+    handleResponse(data);
   };
 
   const handleColorSelectorToggle = (e) => {

@@ -1,4 +1,6 @@
-const loginUser = async (user) => {
+import catchErrors from "./catchAsync";
+
+const loginUser = catchErrors(async (user) => {
   const response = await fetch("/api/user/login", {
     method: "POST",
     credentials: "same-origin",
@@ -8,7 +10,7 @@ const loginUser = async (user) => {
     },
     body: JSON.stringify(user),
   });
-  return response.json();
-};
+  return await response.json();
+});
 
 export default loginUser;

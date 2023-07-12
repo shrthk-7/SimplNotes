@@ -1,8 +1,8 @@
-const express = require("express");
+import { Router } from "express";
 const notesController = require("../controller/notesController");
-const verifyUser = require("../middleware/verifyUser");
+import verifyUser from "../middleware/verifyUser";
 
-const router = express.Router();
+const router = Router();
 router
   .route("/")
   .get(verifyUser, notesController.getAllNotes)
@@ -14,4 +14,4 @@ router
   .patch(verifyUser, notesController.updateNote)
   .delete(verifyUser, notesController.deleteNote);
 
-module.exports = router;
+export default router;

@@ -1,10 +1,10 @@
 require("dotenv").config("./.env");
 
 import express, { Express, Request, Response, NextFunction } from "express";
-const notesRouter: any = require("./router/notesRouter");
-const userRouter: any = require("./router/userRouter");
 
-const globalErrorHandler: any = require("./utils/globalErrorHandler");
+import notesRouter from "./router/notesRouter";
+import userRouter from "./router/userRouter";
+import globalErrorHandler from "./utils/globalErrorHandler";
 import ApiError from "./utils/ApiError";
 
 const app: Express = express();

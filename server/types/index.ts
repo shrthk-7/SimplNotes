@@ -5,3 +5,14 @@ export type AsyncRequestHandler = (
   res: Response,
   next: NextFunction
 ) => Promise<void>;
+
+export type ReqWithCred = Request & {
+  body: {
+    username?: string;
+    password?: string;
+  };
+  user?: {
+    username: string;
+    id: string;
+  };
+};

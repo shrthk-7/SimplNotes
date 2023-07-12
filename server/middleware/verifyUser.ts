@@ -1,9 +1,10 @@
 import { Response, NextFunction } from "express";
-import { ReqWithCred } from "../types";
+import { ReqWithBody } from "../types";
 import ApiError from "../utils/ApiError";
+
 const jwt = require("jsonwebtoken");
 
-const verifyUser = (req: ReqWithCred, res: Response, next: NextFunction) => {
+const verifyUser = (req: ReqWithBody, res: Response, next: NextFunction) => {
   try {
     const jwt_token = req.headers["x-access-token"];
     if (!jwt_token) {
@@ -24,4 +25,3 @@ const verifyUser = (req: ReqWithCred, res: Response, next: NextFunction) => {
 };
 
 export default verifyUser;
-module.exports = verifyUser;

@@ -1,5 +1,5 @@
 import { Router } from "express";
-const userController = require("../controller/userController");
+import userController from "../controller/userController";
 
 const router = Router();
 router.route("/signup").post(userController.registerUser);

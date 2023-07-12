@@ -1,5 +1,5 @@
 import { Router } from "express";
-const notesController = require("../controller/notesController");
+import notesController from "../controller/notesController";
 import verifyUser from "../middleware/verifyUser";
 
 const router = Router();

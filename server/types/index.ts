@@ -6,13 +6,17 @@ export type AsyncRequestHandler = (
   next: NextFunction
 ) => Promise<void>;
 
-export type ReqWithCred = Request & {
+export interface ReqWithBody extends Request {
   body: {
     username?: string;
     password?: string;
+    heading?: string;
+    body?: string;
+    backgroundColor?: string;
+    color?: string;
   };
   user?: {
     username: string;
     id: string;
   };
-};
+}

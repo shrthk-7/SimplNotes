@@ -14,10 +14,10 @@ class ApiError extends Error {
   }
 }
 
-export type iApiError = Error & {
+export interface iApiError extends Error {
   statusCode: number;
   status: "fail" | "error";
   isOperational: boolean;
-};
+}
 
 export default ApiError;

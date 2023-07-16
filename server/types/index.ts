@@ -1,4 +1,5 @@
-import { Request, Response, NextFunction } from "express";
+import e, { Request, Response, NextFunction } from "express";
+import { JwtPayload } from "jsonwebtoken";
 
 export type AsyncRequestHandler = (
   req: Request,
@@ -19,4 +20,9 @@ export interface ReqWithBody extends Request {
     username: string;
     id: string;
   };
+}
+
+export interface UserPayload extends JwtPayload {
+  username: string;
+  id: string;
 }

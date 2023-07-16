@@ -22,4 +22,3 @@ const globalErrorHandler = (
 };
 
 export default globalErrorHandler;
-module.exports = globalErrorHandler;

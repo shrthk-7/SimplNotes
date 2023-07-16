@@ -1,25 +1,25 @@
 import { Response, NextFunction } from "express";
-import { ReqWithBody } from "../types";
+import { ReqWithBody, UserPayload } from "../types";
 import ApiError from "../utils/ApiError";
-
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 const verifyUser = (req: ReqWithBody, res: Response, next: NextFunction) => {
   try {
     const jwt_token = req.headers["x-access-token"];
-    if (!jwt_token) {
-      return next(new ApiError("no access token found", 401));
+    if (!jwt_token || typeof jwt_token !== "string") {
+      return next(new ApiError("No access token found", 401));
     }
 
-    const user: { username: string; id: string } = jwt.verify(
-      jwt_token,
-      process.env.TOKEN_KEY
-    );
+    if (!process.env.TOKEN_KEY) {
+      return next(new ApiError("No token key found", 500));
+    }
+
+    const user = jwt.verify(jwt_token, process.env.TOKEN_KEY) as UserPayload;
     req.user = user;
     next();
   } catch (err: any) {
     return next(
-      new ApiError(`auth token verification failed: ${err.message}`, 401)
+      new ApiError(`Auth token verification failed: ${err.message}`, 401)
     );
   }
 };

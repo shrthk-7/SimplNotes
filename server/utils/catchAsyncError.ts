@@ -11,4 +11,3 @@ const catchAsyncError = (fn: AsyncRequestHandler) => {
 };
 
 export default catchAsyncError;
-module.exports = catchAsyncError;

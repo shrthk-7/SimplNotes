@@ -1,14 +1,13 @@
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+import { randomBytes } from "crypto";
 import catchAsyncError from "../utils/catchAsyncError";
 import ApiError from "../utils/ApiError";
 import prisma from "../utils/prisma";
+import passwordUtils from "../utils/passwordUtils";
 
 import { ReqWithBody } from "../types";
 import { NextFunction, Response } from "express";
-
-const SALT_ROUNDS = 5;
 
 const registerUser = catchAsyncError(
   async (req: ReqWithBody, res: Response, next: NextFunction) => {
@@ -23,11 +22,14 @@ const registerUser = catchAsyncError(
     });
     if (existingUser) return next(new ApiError(`username already exists`, 400));
 
-    const hashed_password: string = await bcrypt.hash(password, SALT_ROUNDS);
+    const salt = randomBytes(8).toString("hex");
+    const hashedPassword = await passwordUtils.getPasswordHash(password, salt);
+
     const user = await prisma.user.create({
       data: {
         username: username,
-        password: hashed_password,
+        password: hashedPassword,
+        salt: salt,
       },
     });
 
@@ -63,7 +65,11 @@ const loginUser = catchAsyncError(
     });
     if (!user) return next(new ApiError("user not found", 401));
 
-    const verified = await bcrypt.compare(password, user.password);
+    const verified = await passwordUtils.verifyPasswordHash(
+      password,
+      user.salt,
+      user.password
+    );
     if (!verified) return next(new ApiError("user not found", 401));
 
     const token = jwt.sign(

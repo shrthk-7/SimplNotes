@@ -1,4 +1,5 @@
-require("dotenv").config("./.env");
+require("dotenv").config();
+
 const express = require("express");
 const notesRouter = require("./router/notesRouter");
 const userRouter = require("./router/userRouter");

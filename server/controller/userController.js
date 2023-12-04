@@ -11,13 +11,13 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
   const { username, password } = req.body;
 
   if (!(username && password))
-    next(new ApiError(`both fields are required`, 400));
+    return next(new ApiError(`both fields are required`, 400));
 
-  const existingUser = await User.findOne({
+  const existingUser = await User.find({
     username: username.toLowerCase(),
   });
 
-  if (existingUser) next(new ApiError(`username already exists`, 400));
+  if (existingUser) return next(new ApiError(`username already exists`, 400));
 
   const hashed_password = await bcrypt.hash(password, SALT_ROUNDS);
   const user = await User.create({
@@ -27,7 +27,7 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
 
   const token = jwt.sign(
     {
-      user_id: user._id,
+      user_id: user.user_id,
       username: user.username,
     },
     process.env.TOKEN_KEY,
@@ -46,15 +46,15 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
 exports.loginUser = catchAsyncError(async (req, res) => {
   const { username, password } = req.body;
 
-  const user = await User.findOne({ username: username });
-  if (!user) next(new ApiError("user not found"));
+  const user = await User.find({ username: username });
+  if (!user) return next(new ApiError("user not found"));
 
   const verified = await bcrypt.compare(password, user.password);
-  if (!verified) next(new ApiError("user not found"));
+  if (!verified) return next(new ApiError("user not found"));
 
   const token = jwt.sign(
     {
-      user_id: user._id,
+      user_id: user.user_id,
       username: user.username,
     },
     process.env.TOKEN_KEY,

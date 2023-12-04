@@ -1,21 +1,33 @@
-const mongoose = require("mongoose");
-const Note = require("./noteModel");
+const { query } = require("../utils/mysql");
 
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: [true, "Username cannot be empty"],
-    maxlength: [60, "Username must be shorter than 60 characters"],
-  },
-  password: {
-    type: String,
-    required: [true, "Password cannot be empty"],
-  },
-  notes: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "Note",
-  },
-});
+const find = async ({ username, user_id }) => {
+  if (!username) {
+    throw new Error("Incomplete data");
+  }
 
-const User = mongoose.model("User", userSchema);
-module.exports = User;
+  if (username) {
+    return (
+      await query("SELECT * FROM User WHERE username = ?", [username])
+    )[0];
+  }
+
+  if (user_id) {
+    return (await query("SELECT * FROM User WHERE user_id = ?", [user_id]))[0];
+  }
+};
+
+const create = async ({ username, password }) => {
+  if (!username || !password) {
+    throw new Error("Incomplete Data");
+  }
+  const { insertId } = await query(
+    "INSERT INTO User(username, password) VALUES (?, ?)",
+    [username, password]
+  );
+  const result = await query("SELECT * FROM User WHERE user_id = ?", [
+    insertId,
+  ]);
+  return result[0];
+};
+
+module.exports = { find, create };

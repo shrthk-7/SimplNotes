@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const ApiError = require("../utils/ApiError");
+
 verifyUser = (req, res, next) => {
   try {
     const jwt_token = req.headers["x-access-token"];
@@ -7,9 +8,11 @@ verifyUser = (req, res, next) => {
 
     const user = jwt.verify(jwt_token, process.env.TOKEN_KEY);
     req.user = user;
-    next();
+    return next();
   } catch (err) {
-    next(new ApiError(`auth token verification failed: ${err.message}`, 401));
+    return next(
+      new ApiError(`auth token verification failed: ${err.message}`, 401)
+    );
   }
 };
 

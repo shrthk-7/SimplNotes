@@ -21,7 +21,7 @@ const Notes = () => {
 
   const removeNote = (id) => {
     setBackendData((currBackendData) => {
-      return currBackendData.filter((note) => note._id !== id);
+      return currBackendData.filter((note) => note.note_id !== id);
     });
   };
 
@@ -29,7 +29,9 @@ const Notes = () => {
 
   if (backendData.length > 0) {
     content = backendData.map((note) => {
-      return <NoteCard key={note._id} note={note} removeNote={removeNote} />;
+      return (
+        <NoteCard key={note.note_id} note={note} removeNote={removeNote} />
+      );
     });
   }
 
